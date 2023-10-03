@@ -23,8 +23,6 @@ int numRepeats = 1; //sets the number of times each button repeats in the test
 int isInside = 4;   //sets the color of the highlighted row if the mouse hovers over it
 // 0, 1, 2, 3 refer to the 4 different rows. 4 is everything else
 
-final int RADIX = 10;
-
 color black = color(0); 
 color highlightPink = color(255,192,203,127); 
 color cyan = color(0, 255, 255);
@@ -33,8 +31,6 @@ Rectangle row0;
 Rectangle row1;
 Rectangle row2;
 Rectangle row3;
-
-IntDict translateKeys;
 
 void setup()
 {
@@ -53,12 +49,6 @@ void setup()
   catch (AWTException e) {
     e.printStackTrace();
   }
-  
-  translateKeys = new IntDict();
-  translateKeys.set("a", 0);
-  translateKeys.set("s", 1);
-  translateKeys.set("d", 2);
-  translateKeys.set("c", 3);
 
   //===DON'T MODIFY MY RANDOM ORDERING CODE==
   for (int i = 0; i < 16; i++) //generate list of targets and randomize the order
@@ -105,55 +95,11 @@ void draw()
   
   
   fill(cyan);
-  text("a", margin + (buttonSize/2), margin-buttonSize);
-  text("s", (padding + buttonSize) + margin + (buttonSize/2), margin-buttonSize);
-  text("d", 2*(padding + buttonSize) + margin + (buttonSize/2), margin-buttonSize);
-  text("c", 3*(padding + buttonSize) + margin + (buttonSize/2), margin-buttonSize);
-  
-  
-  // check whether the mouse is hovering over a box
-  // need to create the highlights for the boxes rawr
-  // draw a grid around the squares, test if the hovering works
-  // then test the fill code
-  
-  //fill(255, 0, 0, 200); // set fill color to translucent red
-  //ellipse(mouseX, mouseY, 20, 20); //draw user cursor as a circle with a diameter of 20
+  text("1", margin + (buttonSize/2), margin-buttonSize);
+  text("2", (padding + buttonSize) + margin + (buttonSize/2), margin-buttonSize);
+  text("3", 2*(padding + buttonSize) + margin + (buttonSize/2), margin-buttonSize);
+  text("4", 3*(padding + buttonSize) + margin + (buttonSize/2), margin-buttonSize);
 }
-
-void mousePressed() // test to see if hit was in target!
-{
- // if (trialNum >= trials.size()) //if task is over, just return
- //   return;
-
- // if (trialNum == 0) //check if first click, if so, start timer
- //   startTime = millis();
-
- // if (trialNum == trials.size() - 1) //check if final click
- // {
- //   finishTime = millis();
- //   //write to terminal some output. Useful for debugging too.
- //   println("we're done!");
- // }
-
- // Rectangle bounds = getButtonLocation(trials.get(trialNum));
-
- ////check to see if mouse cursor is inside button 
- // if ((mouseX > bounds.x && mouseX < bounds.x + bounds.width) && (mouseY > bounds.y && mouseY < bounds.y + bounds.height)) // test to see if hit was within bounds
- // {
- //   System.out.println("HIT! " + trialNum + " " + (millis() - startTime)); // success
- //   hits++; 
- // } 
- // else
- // {
- //   System.out.println("MISSED! " + trialNum + " " + (millis() - startTime)); // fail
- //   misses++;
- // }
-
- // trialNum++; //Increment trial number
-
- // //in this example code, we move the mouse back to the middle
- // robot.mouseMove(width/2, (height)/2); //on click, move cursor to roughly center of window!
-}  
 
 //probably shouldn't have to edit this method
 Rectangle getButtonLocation(int i) //for a given button ID, what is its location and size
@@ -205,7 +151,6 @@ void drawRectangleHighlight(int i)
   rect(bounds.x, bounds.y, bounds.width, bounds.height); //draw button
 }
 
-//bool contains(int mx, int my, float xLeft, float yTop, float x
 
 void mouseMoved()
 {
@@ -245,17 +190,10 @@ void keyPressed()
   
   int answerButton = trials.get(trialNum) % 4;
   int answerRow = trials.get(trialNum) / 4;
-  
-  
-  int keyAsInt;
-  if (translateKeys.hasKey(String.valueOf(key))) {
-    keyAsInt = translateKeys.get(String.valueOf(key));
-  } else {
-    keyAsInt = 4;
-  }
+  int keyAsInt = Integer.parseInt(String.valueOf(key)) - 1;
   
   print("answerButton:" + answerButton + "\n");
-  print("key:" + key + " translate:" + keyAsInt + "\n");
+  print("key:" + keyAsInt + "\n");
 
   //check to see if key clicked is the right button in the row
   if (keyAsInt==answerButton && isInside==answerRow){
